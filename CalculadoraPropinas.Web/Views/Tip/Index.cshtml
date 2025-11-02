@@ -1,0 +1,52 @@
+@model CalculadoraPropinas.Web.Models.TipModel
+
+@{
+    ViewData["Title"] = "Calculadora de Propinas";
+}
+
+
+<div class="container mt-5" style="height: 85%">
+    <h2 class="mb-4 text-center">Calculadora de Propinas</h2>
+
+    <form asp-action="Index" method="post" class="mx-auto" style="max-width: 400px;">
+        <div class="mb-3">
+            <label asp-for="TotalCheck" class="form-label"></label>
+            <input asp-for="TotalCheck" class="form-control"/>
+            <span asp-validation-for="TotalCheck" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="PercentageTip" class="form-label"></label>
+            <input asp-for="PercentageTip" class="form-control"/>
+            <span asp-validation-for="PercentageTip" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 btnSave">Calcular</button>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    @if (Model != null && Model.TotalCheck > 0)
+    {
+        <text>
+            <script>
+            Swal.fire({
+                title: "Resultado",
+                html: `
+                    <div style='text-align:left;'>
+                        <b>Total de la cuenta:</b> $@Model.TotalCheck.ToString("0.00")<br>
+                        <b>Porcentaje de propina:</b> @Model.PercentageTip%<br>
+                        <b>Propina:</b> $@Model.Tip.ToString("0.00")<br>
+                        <b>Total a pagar:</b> $@Model.TotalWithTip.ToString("0.00")
+                    </div>
+                `,
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+        </script>
+        </text>
+    }
+}
